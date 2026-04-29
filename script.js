@@ -1,6 +1,13 @@
 // Pick a random whole number from 1 to 100.
 let secretNumber = Math.floor(Math.random() * 100) + 1;
-let triesLeft = 10;
+const difficultySettings = {
+  easy: 12,
+  medium: 10,
+  hard: 7,
+};
+
+const difficulty = document.getElementById("difficulty");
+let triesLeft = difficultySettings[difficulty.value];
 
 const guessInput = document.getElementById("guessInput");
 const checkButton = document.getElementById("checkButton");
@@ -10,6 +17,7 @@ const tries = document.getElementById("tries");
 
 checkButton.addEventListener("click", checkGuess);
 resetButton.addEventListener("click", resetGame);
+difficulty.addEventListener("change", resetGame);
 
 function checkGuess() {
   const userGuess = Number(guessInput.value);
@@ -52,11 +60,14 @@ function endGame() {
 }
 
 function resetGame() {
+  const selectedDifficulty = difficulty.value;
+  const maxTries = difficultySettings[selectedDifficulty];
+
   secretNumber = Math.floor(Math.random() * 100) + 1;
-  triesLeft = 10;
+  triesLeft = maxTries;
   guessInput.value = "";
   guessInput.disabled = false;
   checkButton.disabled = false;
-  message.textContent = "New game started. Make your first guess!";
-  tries.textContent = "Tries left: 10";
+  message.textContent = `New ${selectedDifficulty} game started. Make your first guess!`;
+  tries.textContent = `Tries left: ${maxTries}`;
 }
